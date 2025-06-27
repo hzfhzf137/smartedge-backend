@@ -10,9 +10,10 @@ const app = express();
 
 // ✅ CORS Setup
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://hzfhzf137.github.io'],
   credentials: true,
 }));
+
 
 // ✅ Allow credentials
 app.use((req, res, next) => {
