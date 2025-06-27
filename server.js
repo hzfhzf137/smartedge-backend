@@ -9,11 +9,17 @@ const authRoutes = require('./routes/authRoutes');
 const app = express();
 
 // ✅ CORS Setup
-app.use(cors({
-  origin: ['http://localhost:5173', 'https://hzfhzf137.github.io'],
-  credentials: true,
-}));
+const cors = require("cors");
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://hzfhzf137.github.io'
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 
 // ✅ Allow credentials
 app.use((req, res, next) => {
