@@ -1,4 +1,3 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -6,39 +5,41 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 const authRoutes = require('./routes/authRoutes');
+const productRoutes = require('./routes/productRoutes'); // if you have this
 
 const app = express();
+
+// ✅ CORS setup (only for GitHub Pages now)
+app.use(cors({
+  origin: 'https://hzfhzf137.github.io',
+  credentials: true
+}));
+
+// ✅ Global CORS Headers (required for preflight responses)
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://hzfhzf137.github.io');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  next();
+});
 
 // ✅ Middleware
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ Proper CORS setup
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://hzfhzf137.github.io/smart-edge'
-];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
-
 // ✅ Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes); // Only if this file exists
 
 // ✅ Connect to MongoDB and Start Server
+const PORT = process.env.PORT || 5000;
+
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('✅ MongoDB connected');
-    app.listen(process.env.PORT || 5000, () => {
-      console.log(`🚀 Server running on port ${process.env.PORT || 5000}`);
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
     });
   })
   .catch((err) => {
