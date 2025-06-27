@@ -1,19 +1,25 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// ✅ CORS for GitHub Pages
+// ✅ CORS setup for GitHub Pages
 app.use(cors({
   origin: 'https://hzfhzf137.github.io',
-  credentials: true
+  credentials: true,
 }));
+
+// ✅ Basic test route
+app.get('/', (req, res) => {
+  res.send('SmartEdge Backend is running ✅');
+});
 
 // ✅ Middleware
 app.use(express.json());
@@ -23,14 +29,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 
-// ✅ Root route for Railway health check
-app.get('/', (req, res) => {
-  res.send('SmartEdge backend is running ✅');
-});
-
-// ✅ Mongo + Start
-const PORT = process.env.PORT || 5000;
-
+// ✅ MongoDB connection
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('✅ MongoDB connected');
@@ -38,6 +37,4 @@ mongoose.connect(process.env.MONGODB_URI)
       console.log(`🚀 Server running on port ${PORT}`);
     });
   })
-  .catch((err) => {
-    console.error('❌ MongoDB connection error:', err);
-  });
+  .catch(err => console.error('❌ MongoDB connection error:', err));
