@@ -8,20 +8,26 @@ const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-// ✅ CORS Setup
-const cors = require("cors");
-
+// ✅ Correct CORS configuration
 const allowedOrigins = [
   'http://localhost:5173',
   'https://hzfhzf137.github.io'
 ];
 
 app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (e.g., mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 }));
 
-// ✅ Allow credentials
+// ✅ Allow cookies from cross-origin
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
@@ -38,8 +44,8 @@ app.use('/api/auth', authRoutes);
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('✅ MongoDB connected');
-    app.listen(5000, () => {
-      console.log('🚀 Server running on http://localhost:5000');
+    app.listen(process.env.PORT || 5000, () => {
+      console.log(`🚀 Server running on http://localhost:${process.env.PORT || 5000}`);
     });
   })
   .catch((err) => {
