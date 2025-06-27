@@ -5,24 +5,15 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 const authRoutes = require('./routes/authRoutes');
-const productRoutes = require('./routes/productRoutes'); // if you have this
+const productRoutes = require('./routes/productRoutes');
 
 const app = express();
 
-// ✅ CORS setup (only for GitHub Pages now)
+// ✅ CORS for GitHub Pages
 app.use(cors({
   origin: 'https://hzfhzf137.github.io',
   credentials: true
 }));
-
-// ✅ Global CORS Headers (required for preflight responses)
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://hzfhzf137.github.io');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  next();
-});
 
 // ✅ Middleware
 app.use(express.json());
@@ -30,9 +21,14 @@ app.use(cookieParser());
 
 // ✅ Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes); // Only if this file exists
+app.use('/api/products', productRoutes);
 
-// ✅ Connect to MongoDB and Start Server
+// ✅ Root route for Railway health check
+app.get('/', (req, res) => {
+  res.send('SmartEdge backend is running ✅');
+});
+
+// ✅ Mongo + Start
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect(process.env.MONGODB_URI)
