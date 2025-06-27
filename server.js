@@ -16,7 +16,7 @@ app.use(cookieParser());
 // ✅ Proper CORS setup
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://hzfhzf137.github.io'
+  'https://hzfhzf137.github.io/smart-edge'
 ];
 
 app.use(cors({
