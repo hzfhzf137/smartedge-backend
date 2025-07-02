@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { signup, login } = require('../controllers/authController');
+const verifyToken = require('../middleware/verifyToken'); // ✅ Import middleware
 
 // Signup
 router.post('/signup', signup);
@@ -10,16 +11,10 @@ router.post('/signup', signup);
 // Login
 router.post('/login', login);
 
-// Get current user
-router.get('/me', async (req, res) => {
+// ✅ Get current user (Protected)
+router.get('/me', verifyToken, async (req, res) => {
   try {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.status(401).json({ error: 'Unauthorized - No token' });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id).select('-password');
+    const user = await User.findById(req.user.id).select('-password');
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
