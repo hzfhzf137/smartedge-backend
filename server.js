@@ -118,10 +118,10 @@ app.use((err, req, res, next) => {
 // ✅ MongoDB + Server Start
 const PORT = 5000; // Railway custom port
 
-// // Optional: Log unhandled rejections
-// process.on('unhandledRejection', (reason, promise) => {
-//   console.error('❌ Unhandled Rejection:', reason);
-// });
+// Optional: Log unhandled rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection:', reason);
+});
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
