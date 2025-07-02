@@ -70,18 +70,18 @@ const cors = require('cors');
 
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
-const cartRoutes = require('./routes/cartRoutes'); // ✅ Cart Routes
-const verifyToken = require('./middleware/verifyToken'); // ✅ Auth Middleware
+const cartRoutes = require('./routes/cartRoutes');
+const verifyToken = require('./middleware/verifyToken');
 
 const app = express();
 
-// ✅ CORS setup for GitHub Pages
+// ✅ CORS for GitHub Pages
 app.use(cors({
   origin: 'https://hzfhzf137.github.io',
   credentials: true
 }));
 
-// ✅ Global CORS Headers for preflight
+// ✅ Global Headers for Preflight
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://hzfhzf137.github.io');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -90,7 +90,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// ✅ Middlewares
+// ✅ Middleware
 app.use(express.json());
 app.use(cookieParser());
 
@@ -102,10 +102,26 @@ app.get('/', (req, res) => {
 // ✅ Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
-app.use('/api/cart', verifyToken, cartRoutes); // ✅ Protected
+app.use('/api/cart', verifyToken, cartRoutes);
 
-// ✅ Connect to MongoDB and Start Server
+// ✅ Catch-all route for undefined paths
+app.use((req, res, next) => {
+  res.status(404).json({ error: 'Route not found' });
+});
+
+// ✅ Error handler
+app.use((err, req, res, next) => {
+  console.error('❌ Internal error:', err.stack);
+  res.status(500).json({ error: 'Internal server error' });
+});
+
+// ✅ MongoDB + Server Start
 const PORT = process.env.PORT || 5000;
+
+// Optional: Log unhandled rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection:', reason);
+});
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
@@ -118,4 +134,5 @@ mongoose.connect(process.env.MONGODB_URI)
     console.error('❌ MongoDB connection error:', err);
     process.exit(1);
   });
+
 
