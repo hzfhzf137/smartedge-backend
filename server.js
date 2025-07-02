@@ -84,12 +84,11 @@ app.use(cors({
 // ✅ Global Headers for Preflight
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://hzfhzf137.github.io');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
 });
-
 // ✅ Middleware
 app.use(express.json());
 app.use(cookieParser());
@@ -100,9 +99,9 @@ app.get('/', (req, res) => {
 });
 
 // ✅ Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/cart', verifyToken, cartRoutes);
+app.use('/auth', authRoutes);
+app.use('/products', productRoutes);
+app.use('/cart', verifyToken, cartRoutes);
 
 // ✅ Catch-all route for undefined paths
 app.use((req, res, next) => {
@@ -116,7 +115,7 @@ app.use((err, req, res, next) => {
 });
 
 // ✅ MongoDB + Server Start
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 
 // Optional: Log unhandled rejections
 process.on('unhandledRejection', (reason, promise) => {
