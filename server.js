@@ -76,21 +76,16 @@ const verifyToken = require('./middleware/verifyToken'); // ✅ Auth Middleware
 const app = express();
 
 // ✅ CORS Configuration
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://hzfhzf137.github.io'
-];
+// const allowedOrigins = [
+//   'http://localhost:5173',
+//   'https://hzfhzf137.github.io'
+// ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: 'https://hzfhzf137.github.io',
   credentials: true,
 }));
+
 
 // ✅ Middlewares
 app.use(express.json());
