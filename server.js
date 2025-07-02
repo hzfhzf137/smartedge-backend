@@ -75,23 +75,25 @@ const verifyToken = require('./middleware/verifyToken');
 
 const app = express();
 
-// ✅ Correct CORS configuration
+// ✅ CORS for GitHub Pages
 app.use(cors({
   origin: 'https://hzfhzf137.github.io',
-  credentials: true,
+  credentials: true
 }));
 
-// ✅ Preflight response for all routes
-app.options('*', cors({
-  origin: 'https://hzfhzf137.github.io',
-  credentials: true,
-}));
-
-// ✅ Middlewares
+// ✅ Global Headers for Preflight
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://hzfhzf137.github.io/smart-edge/');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+// ✅ Middleware
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ Health check
+// ✅ Health Check
 app.get('/', (req, res) => {
   res.send('🟢 SmartEdge backend is running!');
 });
@@ -101,8 +103,24 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', verifyToken, cartRoutes);
 
+// ✅ Catch-all route for undefined paths
+app.use((req, res, next) => {
+  res.status(404).json({ error: 'Route not found' });
+});
+
+// ✅ Error handler
+app.use((err, req, res, next) => {
+  console.error('❌ Internal error:', err.stack);
+  res.status(500).json({ error: 'Internal server error' });
+});
+
 // ✅ MongoDB + Server Start
 const PORT = process.env.PORT || 5000;
+
+// Optional: Log unhandled rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection:', reason);
+});
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
@@ -115,7 +133,5 @@ mongoose.connect(process.env.MONGODB_URI)
     console.error('❌ MongoDB connection error:', err);
     process.exit(1);
   });
-
-
 
 
