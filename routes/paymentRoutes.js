@@ -1,31 +1,31 @@
 const express = require("express");
 const router = express.Router();
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY); // ✅ Secret key from .env
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-// @route   POST /api/payments/create-checkout-session
+// POST /api/payments/create-checkout-session
 router.post("/create-checkout-session", async (req, res) => {
   const { cartItems, shippingDetails } = req.body;
 
   try {
-    // ✅ Convert each cart item into Stripe line item
+    // Stripe line items (price in cents)
     const line_items = cartItems.map((item) => ({
       price_data: {
         currency: "usd",
         product_data: {
           name: item.name,
         },
-        unit_amount: Math.round(item.price * 100), // cents
+        unit_amount: Math.round(item.price * 100), // Convert USD to cents
       },
       quantity: item.quantity,
     }));
 
-    // ✅ Create Stripe Checkout session
+    // Create a Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
       line_items,
-      success_url: process.env.FRONT_END_URL_SUCCESS, // ✅ Redirect to /success
-      cancel_url: process.env.FRONT_END_URL_CANCEL,   // ✅ Redirect to /checkout with ?canceled=true
+      success_url: `${process.env.FRONT_END_URL_SUCCESS}`,
+      cancel_url: `${process.env.FRONT_END_URL_CANCEL}`,
       metadata: {
         fullName: shippingDetails.fullName,
         address: shippingDetails.address,
@@ -35,9 +35,8 @@ router.post("/create-checkout-session", async (req, res) => {
       },
     });
 
-    // ✅ Return Checkout URL to frontend
+    // Return session URL to client
     res.status(200).json({ url: session.url });
-
   } catch (error) {
     console.error("❌ Stripe session creation failed:", error.message);
     res.status(500).json({ error: "Stripe session creation failed" });
