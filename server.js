@@ -16,37 +16,37 @@ const app = express();
 
 // ✅ CORS setup for GitHub Pages
 
-// app.use(cors({
-//   origin: 'https://hzfhzf137.github.io',
-//   credentials: true
-// }));
-
-// ✅ CORS setup for local machine Pages
-
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://hzfhzf137.github.io',
   credentials: true
 }));
 
+// ✅ CORS setup for local machine Pages
+
+// app.use(cors({
+//   origin: 'http://localhost:5173',
+//   credentials: true
+// }));
+
 // code for github
 
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', 'https://hzfhzf137.github.io');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-//   res.setHeader('Access-Control-Allow-Credentials', 'true');
-//   next();
-// });
-
-// code for local machine
-
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.setHeader('Access-Control-Allow-Origin', 'https://hzfhzf137.github.io');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
 });
+
+// code for local machine
+
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+//   res.setHeader('Access-Control-Allow-Credentials', 'true');
+//   next();
+// });
 
 // ✅ Middlewares
 app.use(express.json());
