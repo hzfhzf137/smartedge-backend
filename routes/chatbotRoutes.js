@@ -63,6 +63,9 @@ router.post('/', verifyToken, async (req, res) => {
       }
     );
 
+    console.log("ENV OPENROUTER KEY:", process.env.OPENROUTER_API_KEY);
+
+    
     const botReply = openRouterResponse.data.choices[0].message.content;
 
     // Save bot's response
