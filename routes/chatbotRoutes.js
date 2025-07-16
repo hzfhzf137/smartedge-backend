@@ -57,7 +57,6 @@ router.post('/', verifyToken, async (req, res) => {
         headers: {
           Authorization: `Bearer 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`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "https://hzfhzf137.github.io",
           "X-Title": "SmartEdge Chatbot"
         }
       }
