@@ -57,7 +57,7 @@ router.post('/', verifyToken, async (req, res) => {
         headers: {
           "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "https://hzfhzf137.github.io", // Required by OpenRouter
+          "HTTP-Referer": "https://hzfhzf137.github.io/smart-edge", // Required by OpenRouter
           "X-Title": "SmartEdge Chatbot"
         }
       }
@@ -65,7 +65,7 @@ router.post('/', verifyToken, async (req, res) => {
 
     console.log("ENV OPENROUTER KEY:", process.env.OPENROUTER_API_KEY);
 
-    
+
     const botReply = openRouterResponse.data.choices[0].message.content;
 
     // Save bot's response
