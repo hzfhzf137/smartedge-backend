@@ -47,7 +47,7 @@ router.post('/', verifyToken, async (req, res) => {
     const openRouterResponse = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
-        model: "mistralai/mixtral-8x7b-instruct", // You can change model
+        model: "mistralai/mixtral-8x7b-instruct",
         messages: [
           { role: "system", content: "You are a helpful assistant for Smart Edge customers." },
           { role: "user", content: message }
@@ -55,13 +55,14 @@ router.post('/', verifyToken, async (req, res) => {
       },
       {
         headers: {
-          "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          Authorization: `Bearer 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`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "https://hzfhzf137.github.io", // Required by OpenRouter
+          "HTTP-Referer": "https://hzfhzf137.github.io",
           "X-Title": "SmartEdge Chatbot"
         }
       }
     );
+
 
     console.log("ENV OPENROUTER KEY:", process.env.OPENROUTER_API_KEY);
 
