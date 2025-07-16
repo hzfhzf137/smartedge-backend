@@ -10,6 +10,7 @@ const cartRoutes = require('./routes/cartRoutes');
 const verifyToken = require('./middleware/verifyToken');
 const paymentRoutes = require('./routes/paymentRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const chatbotRoutes = require("./routes/chatbotRoutes");
 
 
 
@@ -64,6 +65,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/cart', verifyToken, cartRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/orders', orderRoutes);
+app.use("/api/chatbot", chatbotRoutes);
 
 
 
