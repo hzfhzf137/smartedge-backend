@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const ChatMessage = require('../models/ChatMessage');
+const ChatMessage = require('../models/chatMessage');
 const verifyToken = require('../middleware/verifyToken');
 
 // POST /api/chatbot - Send a message and get reply
@@ -42,7 +42,7 @@ router.post('/', verifyToken, async (req, res) => {
     // );
 
 
-    
+
     // Send message to OpenRouter  code for github
     const openRouterResponse = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
