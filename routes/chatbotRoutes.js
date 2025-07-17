@@ -46,7 +46,7 @@ router.post('/', verifyToken, async (req, res) => {
 
 
 
-    // // Send message to OpenRouter  code for github
+    // Send message to OpenRouter  code for github
     const openRouterResponse = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
@@ -60,7 +60,6 @@ router.post('/', verifyToken, async (req, res) => {
         headers: {
           "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "https://hzfhzf137.github.io", // Required by OpenRouter
           "X-Title": "SmartEdge Chatbot"
         }
       }
