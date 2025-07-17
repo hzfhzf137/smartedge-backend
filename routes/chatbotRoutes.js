@@ -24,29 +24,7 @@ router.post('/', verifyToken, async (req, res) => {
       text: message,
     });
 
-    // Send message to OpenRouter code for local machine
-    // const openRouterResponse = await axios.post(
-    //   "https://openrouter.ai/api/v1/chat/completions",
-    //   {
-    //     model: "mistralai/mixtral-8x7b-instruct", // You can change model
-    //     messages: [
-    //       { role: "system", content: "You are a helpful assistant for Smart Edge customers." },
-    //       { role: "user", content: message }
-    //     ]
-    //   },
-    //   {
-    //     headers: {
-    //       "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-    //       "Content-Type": "application/json",
-    //       "HTTP-Referer": "http://localhost:5173", // Required by OpenRouter
-    //       "X-Title": "SmartEdge Chatbot"
-    //     }
-    //   }
-    // );
 
-
-
-    // Send message to OpenRouter  code for github
     const openRouterResponse = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
