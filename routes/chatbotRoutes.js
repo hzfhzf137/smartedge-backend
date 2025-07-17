@@ -4,6 +4,9 @@ const axios = require('axios');
 const ChatMessage = require('../models/chatMessage');
 const verifyToken = require('../middleware/verifyToken');
 
+require('dotenv').config();
+
+
 // POST /api/chatbot - Send a message and get reply
 router.post('/', verifyToken, async (req, res) => {
   try {
@@ -21,7 +24,7 @@ router.post('/', verifyToken, async (req, res) => {
       text: message,
     });
 
-    // // Send message to OpenRouter code for local machine
+    // Send message to OpenRouter code for local machine
     // const openRouterResponse = await axios.post(
     //   "https://openrouter.ai/api/v1/chat/completions",
     //   {
@@ -43,11 +46,11 @@ router.post('/', verifyToken, async (req, res) => {
 
 
 
-    // Send message to OpenRouter  code for github
+    // // Send message to OpenRouter  code for github
     const openRouterResponse = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
-        model: "mistralai/mixtral-8x7b-instruct",
+        model: "mistralai/mixtral-8x7b-instruct", // You can change model
         messages: [
           { role: "system", content: "You are a helpful assistant for Smart Edge customers." },
           { role: "user", content: message }
@@ -55,15 +58,16 @@ router.post('/', verifyToken, async (req, res) => {
       },
       {
         headers: {
-          Authorization: `Bearer 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`,
+          "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
+          "HTTP-Referer": "https://hzfhzf137.github.io/smart-edge", // Required by OpenRouter
           "X-Title": "SmartEdge Chatbot"
         }
       }
     );
 
 
-    console.log("ENV OPENROUTER KEY:", process.env.OPENROUTER_API_KEY);
+    // console.log("ENV OPENROUTER KEY:", process.env.OPENROUTER_API_KEY);
 
 
     const botReply = openRouterResponse.data.choices[0].message.content;

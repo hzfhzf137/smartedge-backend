@@ -30,7 +30,7 @@ app.use(cors({
 //   credentials: true
 // }));
 
-// code for github
+// // code for github
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://hzfhzf137.github.io');
