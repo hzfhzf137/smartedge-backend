@@ -1,9 +1,15 @@
+// backend/middleware/verifyToken.js
+
 const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
-  const token = req.cookies.token;
+  const cookieToken = req.cookies.token;
+  const headerToken = req.headers.authorization?.split(' ')[1];
+
+  const token = cookieToken || headerToken;
+
   if (!token) {
-    console.log('❌ No token found in cookies');
+    console.log('❌ No token found in cookies or headers');
     return res.status(401).json({ error: 'Unauthorized - No token' });
   }
 

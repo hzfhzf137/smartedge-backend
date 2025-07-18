@@ -1,9 +1,11 @@
+//backend/routes/authRoutes.js
+
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { signup, login } = require('../controllers/authController');
-const verifyToken = require('../middleware/verifyToken'); // ✅ Import middleware
+const verifyToken = require('../middleware/verifyToken'); 
 
 // Signup
 router.post('/signup', signup);
