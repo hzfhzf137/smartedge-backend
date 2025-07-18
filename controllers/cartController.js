@@ -1,12 +1,14 @@
 const Cart = require('../models/cart');
 
+// GET Cart
 exports.getCart = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user?.id || req.userId;
+
     const cart = await Cart.findOne({ userId });
 
     if (!cart) {
-      return res.status(200).json({ cart: [] });
+      return res.status(200).json({ cart: [] }); // Return empty cart array
     }
 
     res.status(200).json({ cart: cart.items });
@@ -16,9 +18,10 @@ exports.getCart = async (req, res) => {
   }
 };
 
+// SAVE/UPDATE Cart
 exports.saveCart = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user?.id || req.userId;
     const { cart } = req.body;
 
     if (!Array.isArray(cart)) {
@@ -45,9 +48,11 @@ exports.saveCart = async (req, res) => {
   }
 };
 
+// CLEAR Cart
 exports.clearCart = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user?.id || req.userId;
+
     await Cart.findOneAndDelete({ userId });
     res.status(200).json({ message: 'Cart cleared' });
   } catch (err) {
