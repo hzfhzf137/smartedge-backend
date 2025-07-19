@@ -21,7 +21,7 @@ const app = express();
 // ✅ CORS setup for GitHub Pages
 
 app.use(cors({
-  origin: 'https://hzfhzf137.github.io',
+  origin: 'https://smart-edge.store',
   credentials: true
 }));
 
@@ -35,7 +35,7 @@ app.use(cors({
 // // code for github
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://hzfhzf137.github.io');
+  res.setHeader('Access-Control-Allow-Origin', 'https://smart-edge.store');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
