@@ -20,10 +20,31 @@ const app = express();
 
 // ✅ CORS setup for GitHub Pages
 
+const allowedOrigins = ['https://smart-edge.store'];
+
 app.use(cors({
-  origin: 'https://smart-edge.store',
-  credentials: true
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 }));
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://smart-edge.store');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
+// app.use(cors({
+//   origin: 'https://smart-edge.store',
+//   credentials: true
+// }));
 
 // ✅ CORS setup for local machine Pages
 
@@ -34,16 +55,29 @@ app.use(cors({
 
 // // code for github
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://smart-edge.store');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', 'https://smart-edge.store');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+//   res.setHeader('Access-Control-Allow-Credentials', 'true');
+//   next();
+// });
 
 // code for local machine
 
+
+// const allowedOrigins = ['http://localhost:5173'];
+
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true,
+// }));
 // app.use((req, res, next) => {
 //   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
 //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
