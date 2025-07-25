@@ -41,27 +41,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use(cors({
-//   origin: 'https://smart-edge.store',
-//   credentials: true
-// }));
-
-// ✅ CORS setup for local machine Pages
-
-// app.use(cors({
-//   origin: 'http://localhost:5173',
-//   credentials: true
-// }));
-
-// // code for github
-
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', 'https://smart-edge.store');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-//   res.setHeader('Access-Control-Allow-Credentials', 'true');
-//   next();
-// });
 
 // code for local machine
 
