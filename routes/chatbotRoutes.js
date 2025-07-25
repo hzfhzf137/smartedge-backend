@@ -32,9 +32,48 @@ router.post('/', verifyToken, async (req, res) => {
       {
         model: "mistralai/mixtral-8x7b-instruct", // You can change model
         messages: [
-          { role: "system", content: "You are a helpful assistant for Smart Edge customers." },
-          { role: "user", content: message }
+          {
+            role: "system",
+            content: `
+              You are Smart Edge’s virtual assistant. Only provide answers based on the official Smart Edge product catalog below. If asked about unrelated topics, politely redirect.
+
+              Here are the Smart Edge products:
+
+              1. **AirPods Pro**
+              - Premium wireless earbuds with active noise cancellation
+              - High-fidelity audio, 24-hour battery life with case
+              - Seamless Apple pairing
+              - Price: $199.99
+
+              2. **MagSafe Charger**
+              - Fast, convenient wireless charging
+              - Perfect alignment with iPhone
+              - Price: $39.99
+
+              3. **Apple Watch Series 8**
+              - Fitness tracking, ECG, blood oxygen monitoring
+              - GPS, waterproof, long battery life
+              - Price: $399.99
+
+              4. **Apple AirTag**
+              - Track lost items with the Find My app
+              - Precision finding (iPhone 11+), compact & water-resistant
+              - Price: $29.99
+
+              5. **Apple Magic Mouse**
+              - Multi-touch wireless mouse with gesture support
+              - Optimized for macOS, sleek portable design
+              - Price: $79.99
+
+              Always respond in a friendly and informative tone based only on this list.
+              `
+          },
+          {
+            role: "user",
+            content: message
+          }
         ]
+
       },
       {
         headers: {
